@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      copy_with_e_generator|copy_with_e:
+        enabled: true
+ 
+builders:
+  copy_with_e:
+    target: ":copy_with_e_generator"
+    import: "package:copy_with_e_generator/builder.dart"
+    builder_factories: ["copyWithEBuilder"]
+    build_extensions: {".dart": [".x.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

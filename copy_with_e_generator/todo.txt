@@ -1,0 +1,6 @@
+1 check that my types are all implemented the class specified
+3 need to order my switch statement better
+    LectureWithType extends Lecture
+    LectureWithType must come before Lecture otherwise we will return Lecture instead of LectureWithType every time
+
+√ check for isAbstract on the passed in types
