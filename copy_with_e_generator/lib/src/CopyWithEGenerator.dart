@@ -25,6 +25,8 @@ class CopyWithEGenerator extends GeneratorForAnnotation<CopyWithE> {
           throw Exception("the list of types for the copywith def must all be classes");
 
         var ce = (el as ClassElement);
+//        sb.writeln("//" + ce.allSupertypes.map((x) => x.element.name).toString());
+//        sb.writeln("//" + ce.library.units.map((x) => x.toString()).toString());
         var fields = ce.fields.map((f) => NameType(f.name, f.type.toString())).toList();
         return ClassDef(ce.isAbstract, ce.name, fields);
       }).toList();
@@ -60,8 +62,9 @@ class CopyWithEGenerator extends GeneratorForAnnotation<CopyWithE> {
 //          .toList();
 
     return element.session.getResolvedLibraryByElement(element.library).then((resolvedLibrary) {
-      var declaration = resolvedLibrary.getElementDeclaration(element);
-      var unit = declaration.resolvedUnit.unit;
+//      var declaration = resolvedLibrary.getElementDeclaration(element);
+//      var unit = declaration.resolvedUnit.unit;
+//      sb.writeln("//" + unit.toString());
 
 //      sb.writeln(createTypeDef(
 //        element.displayName,
