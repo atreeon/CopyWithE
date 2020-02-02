@@ -5,14 +5,24 @@ import 'package:build/src/builder/build_step.dart';
 import 'package:copy_with_e_annotation/CopyWithE.dart';
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
+import 'package:dartx/dartx.dart';
 import 'package:source_gen/source_gen.dart';
+
+import 'GeneratorForAnnotationX.dart';
 
 //class ValueTGenerator extends GeneratorForAnnotation<ValueT> {
 
-class CopyWithEGenerator extends GeneratorForAnnotation<CopyWithE> {
+class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
   @override
-  FutureOr<String> generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) {
+  FutureOr<String> generateForAnnotatedElement(
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+    List<ClassElement> allClasses,
+  ) {
     var sb = StringBuffer();
+
+    sb.writeln("//RULES: 1 all subtypes must be in same file or be passed in");
 
     var types = List<ClassDef>();
     if (!annotation.read('types').isNull) {
@@ -23,23 +33,29 @@ class CopyWithEGenerator extends GeneratorForAnnotation<CopyWithE> {
         var el = x.toTypeValue().element;
         if (el is! ClassElement) //
           throw Exception("the list of types for the copywith def must all be classes");
-
         var ce = (el as ClassElement);
-//        sb.writeln("//" + ce.allSupertypes.map((x) => x.element.name).toString());
-//        sb.writeln("//" + ce.library.units.map((x) => x.toString()).toString());
         var fields = ce.fields.map((f) => NameType(f.name, f.type.toString())).toList();
         return ClassDef(ce.isAbstract, ce.name, fields);
       }).toList();
     }
 
     if (element is ClassElement) {
+      var subClasses = allClasses //
+          .where((x) => x.allSupertypes.any((st) => st.element.name == element.name))
+          .where((x) => !types.any((t) => t.name == x.name))
+          .map((x) => ClassDef(x.isAbstract, x.name, x.fields.map((f) => NameType(f.name, f.type.toString())).toList()))
+          .toList();
+
+      var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
+//      sb.writeln("//types2: " + types2.map((x) => x.name).toString());
+
       var extClass = ClassDef(
         element.isAbstract,
         element.name,
         element.fields.map((x) => NameType(x.name, x.type.toString())).toList(),
       );
 
-      sb.writeln(createCopyWith(extClass, types));
+      sb.writeln(createCopyWith(extClass, types2));
     }
 
     //extension [getClassName + "ext"] on [getClassName] {
@@ -62,6 +78,7 @@ class CopyWithEGenerator extends GeneratorForAnnotation<CopyWithE> {
 //          .toList();
 
     return element.session.getResolvedLibraryByElement(element.library).then((resolvedLibrary) {
+//      resolvedLibrary.
 //      var declaration = resolvedLibrary.getElementDeclaration(element);
 //      var unit = declaration.resolvedUnit.unit;
 //      sb.writeln("//" + unit.toString());
