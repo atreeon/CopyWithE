@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:copy_with_e_annotation/CopyWithE.dart';
 import 'package:copy_with_e_generator/src/classes.dart';
@@ -11,6 +12,16 @@ import 'package:source_gen/source_gen.dart';
 import 'GeneratorForAnnotationX.dart';
 
 //class ValueTGenerator extends GeneratorForAnnotation<ValueT> {
+
+List<NameType> getAllFields(List<InterfaceType> interfaceTypes, ClassElement element) {
+  var superTypeFields = interfaceTypes //
+      .where((x) => x.element.name != "Object")
+      .flatMap((st) => st.element.fields.map((f) => NameType(f.name, f.type.toString())))
+      .toList();
+  var classFields = element.fields.map((f) => NameType(f.name, f.type.toString())).toList();
+
+  return (classFields + superTypeFields).distinctBy((x) => x.name).toList();
+}
 
 class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
   @override
@@ -31,11 +42,12 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
           .listValue
           .map((x) {
         var el = x.toTypeValue().element;
+
         if (el is! ClassElement) //
           throw Exception("the list of types for the copywith def must all be classes");
+
         var ce = (el as ClassElement);
-        var fields = ce.fields.map((f) => NameType(f.name, f.type.toString())).toList();
-        return ClassDef(ce.isAbstract, ce.name, fields);
+        return ClassDef(ce.isAbstract, ce.name, getAllFields(ce.allSupertypes, ce));
       }).toList();
     }
 
@@ -47,12 +59,11 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
           .toList();
 
       var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
-//      sb.writeln("//types2: " + types2.map((x) => x.name).toString());
 
       var extClass = ClassDef(
         element.isAbstract,
         element.name,
-        element.fields.map((x) => NameType(x.name, x.type.toString())).toList(),
+        getAllFields(element.allSupertypes, element),
       );
 
       sb.writeln(createCopyWith(extClass, types2));

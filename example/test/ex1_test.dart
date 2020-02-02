@@ -5,7 +5,7 @@ part 'ex1_test.g.dart';
 
 @CopyWithE()
 class Person {
-  final int age;
+  final int age;s
   final String name;
 
   Person({this.age, this.name});

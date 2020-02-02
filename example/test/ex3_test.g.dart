@@ -7,7 +7,6 @@ part of 'ex3_test.dart';
 // **************************************************************************
 
 //RULES: 1 all subtypes must be in same file or be passed in
-//types2: (Person, Employee)
 extension HasAgeExt on HasAge {
   HasAge cwHasAge({int age}) {
     switch (this.runtimeType) {
@@ -28,7 +27,6 @@ extension HasAgeExt on HasAge {
 }
 
 //RULES: 1 all subtypes must be in same file or be passed in
-//types2: (Person, Employee)
 extension HasNameExt on HasName {
   HasName cwHasName({String name}) {
     switch (this.runtimeType) {

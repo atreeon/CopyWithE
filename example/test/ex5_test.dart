@@ -6,7 +6,6 @@ import 'ex5_testExtra.dart';
 part 'ex5_test.g.dart';
 
 //AUTOMATICALLY GETS SUBTYPES & STILL GETS FROM TYPES
-
 main() {
   test("1", () {
     var bob = Person(age: 5, name: "bob");
