@@ -1,6 +1,10 @@
 import 'package:copy_with_e_annotation/CopyWithE.dart';
 import 'package:test/test.dart';
 
+//One concrete class has two interfaces both
+//  of which have copyWith extension methods
+//  so we name our copyWith cw[ClassName]?
+
 part 'ex3_test.g.dart';
 
 main() {

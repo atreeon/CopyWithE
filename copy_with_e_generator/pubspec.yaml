@@ -12,8 +12,8 @@ dependencies:
   source_gen: 0.9.4+7
   copy_with_e_annotation:
     path: ../copy_with_e_annotation/
-  dartx: ^0.2.0
-  quiver: ^2.0.1 
+  dartx: ^0.3.0
+  quiver: ^2.0.1
   dartz: ^0.8.3 
   adi_helpers:   
     # git: git@bitbucket.org/twistedinferno/adi_helpers.git
