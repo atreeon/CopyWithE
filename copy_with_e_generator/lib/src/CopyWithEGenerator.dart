@@ -11,8 +11,6 @@ import 'package:source_gen/source_gen.dart';
 
 import 'GeneratorForAnnotationX.dart';
 
-//class ValueTGenerator extends GeneratorForAnnotation<ValueT> {
-
 List<NameType> getAllFields(List<InterfaceType> interfaceTypes, ClassElement element) {
   var superTypeFields = interfaceTypes //
       .where((x) => x.element.name != "Object")
