@@ -1,6 +1,7 @@
-import 'package:adi_helpers/stringE.dart';
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:dartx/dartx.dart';
+
+import 'adiHelpers.dart';
 
 String getCopyWithParamList(
   List<NameType> fields,
