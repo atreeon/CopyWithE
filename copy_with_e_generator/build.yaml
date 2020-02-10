@@ -7,7 +7,7 @@ targets:
 builders:
   copy_with_e:
     target: ":copy_with_e_generator"
-    import: "package:copy_with_e_generator/builder.dart"
+    import: "package:copy_with_e_generator/copy_with_e_generator.dart"
     builder_factories: ["copyWithEBuilder"]
     build_extensions: {".dart": [".x.g.part"]}
     auto_apply: dependents

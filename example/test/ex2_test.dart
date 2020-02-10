@@ -1,4 +1,4 @@
-import 'package:copy_with_e_annotation/CopyWithE.dart';
+import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:test/test.dart';
 
 part 'ex2_test.g.dart';

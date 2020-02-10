@@ -40,8 +40,7 @@ abstract class GeneratorForAnnotationX<T> extends Generator {
     final values = Set<String>();
 
     var classElements = library.allElements //
-        .where((x) => x is ClassElement)
-        .map((x) => x as ClassElement)
+        .whereType<ClassElement>()
         .toList();
 
     for (var annotatedElement in library.annotatedWith(typeChecker)) {

@@ -1,6 +1,6 @@
 name: copy_with_e_generator
-description: An annotation processor for @CopyWithE annotations
-version: 1.0.0
+description: Creates copyWith extension methods for each annotated class.  It works on the class it is defined on and sub and superclasses too and does its best with generics, covariance and contravariance.
+version: 1.0.1
 homepage: https://github.com/atreeon/CopyWithE
  
 environment:  

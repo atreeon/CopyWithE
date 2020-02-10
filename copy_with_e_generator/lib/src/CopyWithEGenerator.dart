@@ -43,8 +43,9 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
           .map((x) {
         var el = x.toTypeValue().element;
 
-        if (el is! ClassElement) //
+        if (el is! ClassElement) {
           throw Exception("the list of types for the copywith def must all be classes");
+        }
 
         var ce = (el as ClassElement);
 
@@ -61,7 +62,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
 
       var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
 
-      if (element.typeParameters.length == 0) {
+      if (element.typeParameters.isEmpty) {
         var extClass = ClassDef(
           element.isAbstract,
           element.name,

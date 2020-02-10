@@ -18,8 +18,9 @@ String getCopyWithParamList(
             x.type == g.name || x.type.contains("<${g.name}>"),
         orElse: () => null);
 
-    if (matchingGeneric == null || matchingGeneric.baseType.isNotNullOrEmpty()) //
+    if (matchingGeneric == null || matchingGeneric.baseType.isNotNullOrEmpty()) {
       return true;
+    }
 
     return false;
   }).toList();
