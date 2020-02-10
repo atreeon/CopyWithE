@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/src/builder/build_step.dart';
-import 'package:copy_with_e_annotation/CopyWithE.dart';
+import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
 import 'package:dartx/dartx.dart';

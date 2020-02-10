@@ -1,12 +1,13 @@
 name: copy_with_e_annotation
 description: Creates a copyWith extension method for the object the attribute is specified on and the objects in the list
-version: 1.0.0
-author: Adrian
+version: 1.0.1
 
 environment:  
-  sdk: ">=2.0.0 <3.0.0" 
+  sdk: ">=2.6.1 <3.0.0"
 
 dependencies:
 
 dev_dependencies:  
   test: 1.3.4
+
+homepage: https://github.com/atreeon/CopyWithE

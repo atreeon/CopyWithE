@@ -5,7 +5,8 @@ import 'ex5_testExtra.dart';
 
 part 'ex5_test.g.dart';
 
-//AUTOMATICALLY GETS SUBTYPES & STILL GETS FROM TYPES
+//AUTOMATICALLY GETS SUBTYPES IF THEY EXIST IN THE SAME FILE
+// ALSO, IT GETS FROM THE TYPES PARAMETER
 main() {
   test("1", () {
     var bob = Person(age: 5, name: "bob");
