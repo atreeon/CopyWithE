@@ -17,6 +17,14 @@ jobs:
       run:  |
         pub get
         pub run build_runner build --delete-conflicting-outputs
-    - name: Run tests
+    - name: Run tests Example
       working-directory: ./example
+      run: pub run test
+    - name: Setup
+      working-directory: ./copy_with_e_generator
+      run:  |
+        pub get
+        pub run build_runner build --delete-conflicting-outputs
+    - name: Run tests Example
+      working-directory: ./copy_with_e_generator
       run: pub run test

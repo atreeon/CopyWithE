@@ -8,11 +8,11 @@ void main() {
       var extType = ClassDef(false, "Person", [
         NameType("age", "int"),
         NameType("name", "String"),
-      ]);
+      ], []);
 
       var result = createCopyWith(extType, []).trim();
 
-      var expected = """extension PersonExt on Person{
+      var expected = """extension PersonExt_CopyWithE on Person{
 Person cwPerson({int age, String name}){
 switch (this.runtimeType){
 case Person:
@@ -29,20 +29,20 @@ default: throw Exception();
     test("2", () {
       var extType = ClassDef(true, "HasAge", [
         NameType("age", "int"),
-      ]);
+      ], []);
 
       var result = createCopyWith(extType, [
         ClassDef(false, "Person", [
           NameType("age", "int"),
           NameType("name", "String"),
-        ]),
+        ], []),
         ClassDef(false, "Employee", [
           NameType("age", "int"),
           NameType("name", "String"),
-        ]),
+        ], []),
       ]).trim();
 
-      var expected = """extension HasAgeExt on HasAge{
+      var expected = """extension HasAgeExt_CopyWithE on HasAge{
 HasAge cwHasAge({int age}){
 switch (this.runtimeType){
 case Person:
@@ -54,6 +54,54 @@ case Employee:
 return Employee(
 age: age == null ? this.age : age,
 name: (this as Employee).name,
+);
+default: throw Exception();
+}}}""";
+
+      expect(result, expected);
+    });
+
+    test("3 with generics", () {
+      var extType = ClassDef(true, "PetOwnerBase", [
+        NameType("id", "T"),
+        NameType("name", "String"),
+        NameType("pets", "List<TPet>"),
+      ], [
+        GenericType("T", null),
+        GenericType("TPet", "Pet"),
+      ]);
+
+      var result = createCopyWith(extType, [
+        ClassDef(false, "DogOwner", [
+          NameType("id", "int"),
+          NameType("pets", "List<Dog>"),
+          NameType("name", "String"),
+          NameType("dogStuff", "String"),
+        ], []),
+        ClassDef(false, "CatOwner", [
+          NameType("id", "int"),
+          NameType("pets", "List<Cat>"),
+          NameType("name", "String"),
+          NameType("catStuff", "String"),
+        ], []),
+      ]).trim();
+
+      var expected = """extension PetOwnerBaseExt_CopyWithE on PetOwnerBase{
+PetOwnerBase cwPetOwnerBase({String name, List<Pet> pets}){
+switch (this.runtimeType){
+case DogOwner:
+return DogOwner(
+id: id == null ? this.id : id,
+pets: pets == null ? this.pets : pets,
+name: name == null ? this.name : name,
+dogStuff: (this as DogOwner).dogStuff,
+);
+case CatOwner:
+return CatOwner(
+id: id == null ? this.id : id,
+pets: pets == null ? this.pets : pets,
+name: name == null ? this.name : name,
+catStuff: (this as CatOwner).catStuff,
 );
 default: throw Exception();
 }}}""";

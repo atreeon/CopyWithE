@@ -10,7 +10,7 @@ String createCopyWith(
 
   var sb = StringBuffer();
   sb.writeln(getExtensionDef(extType.name) + "{");
-  sb.writeln(getCopyWithSignature(extType.name, extType.fields) + "{");
+  sb.writeln(getCopyWithSignature(extType.name, extType.fields, extType.generics) + "{");
   sb.writeln("switch (this.runtimeType)" + "{");
 
   types2
