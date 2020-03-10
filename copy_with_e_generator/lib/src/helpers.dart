@@ -1,46 +1,13 @@
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:dartx/dartx.dart';
 
-import 'adiHelpers.dart';
-
 String getCopyWithParamList(
   List<NameType> fields,
   List<GenericType> generics,
 ) {
-  var result = fields.where((x) {
-    //<T> || T
-
-    //we are finding T inside TPet and then rejecting it because it doesn't have a baseType
-    //how do I guard against that!
-
-    var matchingGeneric = generics.firstWhere(
-        (g) => //
-            x.type == g.name || x.type.contains("<${g.name}>"),
-        orElse: () => null);
-
-    if (matchingGeneric == null || matchingGeneric.baseType.isNotNullOrEmpty()) {
-      return true;
-    }
-
-    return false;
-  }).toList();
-  var result2 = result.map((x) {
-    var matchingGeneric = generics.firstWhere(
-        (g) => //
-            x.type == g.name || x.type.contains("<${g.name}>"),
-        orElse: () => null);
-
-    if (matchingGeneric == null) {
-      return "${x.type} ${x.name}";
-    }
-
-    var type = x.type.replaceFirst(matchingGeneric.name, matchingGeneric.baseType);
-
-    return "${type} ${x.name}";
-  }) //
+  return fields
+      .map((e) => "${e.type} ${e.name}") //
       .joinToString(separator: ", ");
-
-  return result2.toString();
 }
 
 String getCopyWithSignature(
@@ -50,9 +17,25 @@ String getCopyWithSignature(
 ) {
   var paramList = getCopyWithParamList(fields, generics);
 
-  var result = "$className cw$className({$paramList})";
+  var genericList = getGenericParams(generics);
+
+  var result = "$className cw$className${genericList}({$paramList})";
 
   return result;
+}
+
+String getGenericParams(List<GenericType> generics) {
+  if (generics.isEmpty) //
+    return "";
+
+  var genericList = generics.map((e) {
+    if (e.baseType == null) {
+      return e.name;
+    }
+
+    return "${e.name} extends ${e.baseType}";
+  }).joinToString(separator: ", ");
+  return "<$genericList>";
 }
 
 String getPropertySetThis(String className, String fieldName) => //

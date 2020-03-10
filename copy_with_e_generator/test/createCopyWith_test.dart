@@ -14,13 +14,12 @@ void main() {
 
       var expected = """extension PersonExt_CopyWithE on Person{
 Person cwPerson({int age, String name}){
-switch (this.runtimeType){
-case Person:
+if (this is Person) {
 return Person(
 age: age == null ? this.age : age,
 name: name == null ? this.name : name,
-);
-default: throw Exception();
+);}
+throw Exception();
 }}}""";
 
       expect(result, expected);
@@ -44,18 +43,17 @@ default: throw Exception();
 
       var expected = """extension HasAgeExt_CopyWithE on HasAge{
 HasAge cwHasAge({int age}){
-switch (this.runtimeType){
-case Person:
+if (this is Person) {
 return Person(
 age: age == null ? this.age : age,
 name: (this as Person).name,
-);
-case Employee:
+);}
+if (this is Employee) {
 return Employee(
 age: age == null ? this.age : age,
 name: (this as Employee).name,
-);
-default: throw Exception();
+);}
+throw Exception();
 }}}""";
 
       expect(result, expected);
@@ -87,23 +85,22 @@ default: throw Exception();
       ]).trim();
 
       var expected = """extension PetOwnerBaseExt_CopyWithE on PetOwnerBase{
-PetOwnerBase cwPetOwnerBase({String name, List<Pet> pets}){
-switch (this.runtimeType){
-case DogOwner:
+PetOwnerBase cwPetOwnerBase<T, TPet extends Pet>({T id, String name, List<TPet> pets}){
+if (this is DogOwner) {
 return DogOwner(
 id: id == null ? this.id : id,
 pets: pets == null ? this.pets : pets,
 name: name == null ? this.name : name,
 dogStuff: (this as DogOwner).dogStuff,
-);
-case CatOwner:
+);}
+if (this is CatOwner) {
 return CatOwner(
 id: id == null ? this.id : id,
 pets: pets == null ? this.pets : pets,
 name: name == null ? this.name : name,
 catStuff: (this as CatOwner).catStuff,
-);
-default: throw Exception();
+);}
+throw Exception();
 }}}""";
 
       expect(result, expected);

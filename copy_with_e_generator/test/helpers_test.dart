@@ -28,7 +28,7 @@ void main() {
         ],
       );
 
-      expect(result, "String name, List<Pet> pets");
+      expect(result, "T id, String name, List<TPet> pets");
     });
 
     test("3 generic (order of generics caused a bug because T was found inside TPet!)", () {
@@ -44,7 +44,7 @@ void main() {
         ],
       );
 
-      expect(result, "String name, List<Pet> pets");
+      expect(result, "T id, String name, List<TPet> pets");
     });
   });
 
@@ -60,6 +60,40 @@ void main() {
       );
 
       expect(result, "Person cwPerson({int age, String name})");
+    });
+
+    test("2", () {
+      var result = getCopyWithSignature(
+        "A",
+        [
+          NameType("a", "T1"),
+          NameType("b", "T2"),
+          NameType("c", "int"),
+        ],
+        [
+          GenericType("T1", null),
+          GenericType("T2", null),
+        ],
+      );
+
+      expect(result, "A cwA<T1, T2>({T1 a, T2 b, int c})");
+    });
+
+    test("3", () {
+      var result = getCopyWithSignature(
+        "A",
+        [
+          NameType("a", "T1"),
+          NameType("b", "T2"),
+          NameType("c", "int"),
+        ],
+        [
+          GenericType("T1", null),
+          GenericType("TPet", "Pet"),
+        ],
+      );
+
+      expect(result, "A cwA<T1, TPet extends Pet>({T1 a, T2 b, int c})");
     });
   });
 

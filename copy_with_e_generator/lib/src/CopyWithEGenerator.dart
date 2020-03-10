@@ -62,67 +62,15 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
 
       var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
 
-      if (element.typeParameters.isEmpty) {
-        var extClass = ClassDef(
-          element.isAbstract,
-          element.name,
-          getAllFields(element.allSupertypes, element),
-          [],
-        );
+      var extClass = ClassDef(
+        element.isAbstract,
+        element.name,
+        getAllFields(element.allSupertypes, element),
+        element.typeParameters.isEmpty ? [] : element.typeParameters.where((x) => x.name != null).map((x) => //
+            GenericType(x.name, x.bound == null ? null : x.bound.toString())).toList(),
+      );
 
-        sb.writeln("//no generics");
-
-        sb.writeln(createCopyWith(extClass, types2));
-      } else {
-        var extClass = ClassDef(
-          element.isAbstract,
-          element.name,
-          getAllFields(element.allSupertypes, element),
-          element.typeParameters.where((x) => x.name != null).map((x) => //
-              GenericType(x.name, x.bound == null ? null : x.bound.toString())).toList(),
-        );
-
-        //why is it being returned from the generics equals
-
-//        var result = extClass.fields.where((x) {
-//          var matchingGeneric = extClass.generics.firstWhere((g) {
-////            sb.writeln("//x.type:${x.type}");
-////
-////            sb.writeln("//  x.type == g.name:${x.type} == ${g.name} == ${x.type == g.name}");
-//            return x.type == g.name || x.type.contains("<${g.name}>");
-//          }, orElse: () => null);
-//
-//          sb.writeln("//${x.name} has matchingGeneric:" + (matchingGeneric != null).toString());
-//
-//          if (matchingGeneric != null) {
-//            sb.writeln("//  matchingGeneric.baseType:" + (matchingGeneric.baseType).toString());
-//            sb.writeln("//  matchingGeneric.baseType == null:" + (matchingGeneric.baseType == null).toString());
-//            sb.writeln("//  matchingGeneric.baseType == null:" + (matchingGeneric.baseType == "null").toString());
-//            sb.writeln("//  matchingGeneric.baseType == '':" + (matchingGeneric.baseType == "").toString());
-//          }
-//
-////          sb.writeln("//${x.name}: " + //
-//          //matchingGeneric == null - it did not find it above
-////              matchingGeneric.baseType +
-////              " | " + //
-////              (matchingGeneric == null || matchingGeneric.baseType.isNullOrEmpty()).toString());
-//
-//          if (matchingGeneric == null || matchingGeneric.baseType.isNullOrEmpty()) //
-//            return true;
-//
-//          return false;
-//        }).toList();
-
-//        sb.writeln("//" + result.length.toString());
-//
-//        sb.writeln("//" + extClass.generics.map((x) => "${x.name} | ${x.baseType}").toList().toString());
-//        sb.writeln("//" + extClass.isAbstract.toString());
-//        sb.writeln("//" + extClass.name.toString());
-//        sb.writeln("//" + extClass.fields.map((x) => "${x.name} | ${x.type}").toList().toString());
-//        sb.writeln("//" + types2.map((x) => "${x.name} ${x.}"))
-
-        sb.writeln(createCopyWith(extClass, types2));
-      }
+      sb.writeln(createCopyWith(extClass, types2));
     }
 
     return element.session.getResolvedLibraryByElement(element.library).then((resolvedLibrary) {
@@ -130,9 +78,3 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
     });
   }
 }
-
-//GenericType getMatchingGeneric(NameType field, List<GenericType> generics){
-//  return generics.firstWhere((g) {
-//    return field.type == g.name || field.type.contains("<${g.name}>");
-//  }
-//}
