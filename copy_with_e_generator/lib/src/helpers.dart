@@ -1,6 +1,36 @@
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:dartx/dartx.dart';
 
+class DepthClassDef {
+  final int depth;
+  final ClassDef class_;
+  DepthClassDef(this.depth, this.class_);
+}
+
+List<ClassDef> orderTypes(ClassDef extType, List<ClassDef> types) {
+  var types2 = [...types, extType];
+
+  var depths = types2.map((e) => //
+      DepthClassDef(getDepth(0, e, types2), e)).toList();
+
+  return depths
+      .sortedByDescending((element) => element.depth) //
+      .map((e) => e.class_)
+      .toList();
+}
+
+int getDepth(int count, ClassDef thisType, List<ClassDef> types) {
+  var related = thisType.baseTypes.intersect(types.map((e) => e.name)).toList();
+
+  if (related.length > 1) //
+    throw Exception();
+
+  if (related.length == 0) //
+    return count;
+
+  return getDepth(count + 1, types.firstWhere((x) => x.name == related[0]), types);
+}
+
 String getCopyWithParamList(
   List<NameType> fields,
   List<GenericType> generics,

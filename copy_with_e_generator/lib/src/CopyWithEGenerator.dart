@@ -49,7 +49,13 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
 
         var ce = (el as ClassElement);
 
-        return ClassDef(ce.isAbstract, ce.name, getAllFields(ce.allSupertypes, ce), []);
+        return ClassDef(
+          ce.isAbstract,
+          ce.name,
+          getAllFields(ce.allSupertypes, ce),
+          [],
+          [...ce.interfaces.map((e) => e.element.name), ce.supertype.element.name],
+        );
       }).toList();
     }
 
@@ -57,7 +63,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
       var subClasses = allClasses //
           .where((x) => x.allSupertypes.any((st) => st.element.name == element.name))
           .where((x) => !types.any((t) => t.name == x.name))
-          .map((x) => ClassDef(x.isAbstract, x.name, getAllFields(x.allSupertypes, x), []))
+          .map((x) => ClassDef(x.isAbstract, x.name, getAllFields(x.allSupertypes, x), [], []))
           .toList();
 
       var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
@@ -68,6 +74,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
         getAllFields(element.allSupertypes, element),
         element.typeParameters.isEmpty ? [] : element.typeParameters.where((x) => x.name != null).map((x) => //
             GenericType(x.name, x.bound == null ? null : x.bound.toString())).toList(),
+        [...element.interfaces.map((e) => e.element.name), element.supertype.element.name],
       );
 
       sb.writeln(createCopyWith(extClass, types2));

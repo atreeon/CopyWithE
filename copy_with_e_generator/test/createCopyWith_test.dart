@@ -8,7 +8,7 @@ void main() {
       var extType = ClassDef(false, "Person", [
         NameType("age", "int"),
         NameType("name", "String"),
-      ], []);
+      ], [], []);
 
       var result = createCopyWith(extType, []).trim();
 
@@ -28,17 +28,17 @@ throw Exception();
     test("2", () {
       var extType = ClassDef(true, "HasAge", [
         NameType("age", "int"),
-      ], []);
+      ], [], []);
 
       var result = createCopyWith(extType, [
         ClassDef(false, "Person", [
           NameType("age", "int"),
           NameType("name", "String"),
-        ], []),
+        ], [], []),
         ClassDef(false, "Employee", [
           NameType("age", "int"),
           NameType("name", "String"),
-        ], []),
+        ], [], []),
       ]).trim();
 
       var expected = """extension HasAgeExt_CopyWithE on HasAge{
@@ -67,7 +67,7 @@ throw Exception();
       ], [
         GenericType("T", null),
         GenericType("TPet", "Pet"),
-      ]);
+      ], []);
 
       var result = createCopyWith(extType, [
         ClassDef(false, "DogOwner", [
@@ -75,13 +75,13 @@ throw Exception();
           NameType("pets", "List<Dog>"),
           NameType("name", "String"),
           NameType("dogStuff", "String"),
-        ], []),
+        ], [], []),
         ClassDef(false, "CatOwner", [
           NameType("id", "int"),
           NameType("pets", "List<Cat>"),
           NameType("name", "String"),
           NameType("catStuff", "String"),
-        ], []),
+        ], [], []),
       ]).trim();
 
       var expected = """extension PetOwnerBaseExt_CopyWithE on PetOwnerBase{

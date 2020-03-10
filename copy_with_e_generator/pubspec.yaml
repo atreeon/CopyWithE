@@ -12,7 +12,7 @@ dependencies:
   copy_with_e_annotation: ^1.0.1
   dartx: ^0.3.0
   quiver: ^2.0.1
-  dartz: ^0.8.3
+  tuple: ^1.0.3
   basic_utils: ^2.4.8
   analyzer: '>=0.35.4 <0.40.0'
 #  adi_helpers:

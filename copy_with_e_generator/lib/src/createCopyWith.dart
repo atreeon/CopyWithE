@@ -1,20 +1,18 @@
 import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:copy_with_e_generator/src/helpers.dart';
-import 'package:dartx/dartx.dart';
 
 String createCopyWith(
   ClassDef extType,
   List<ClassDef> types,
 ) {
-  var types2 = types.appendElement(extType);
+  var types2 = orderTypes(extType, types);
 
   var sb = StringBuffer();
   sb.writeln(getExtensionDef(extType.name) + "{");
   sb.writeln(getCopyWithSignature(extType.name, extType.fields, extType.generics) + "{");
 
-  types2
+  types2 //
       .where((x) => !x.isAbstract) //
-      .sortedByDescending((x) => x.name) //TODO: this needs to change to solve 3
       .forEach((type) {
     sb.writeln("if (this is ${type.name}) {");
     sb.writeln("return ${type.name}(");

@@ -108,8 +108,8 @@ void main() {
   group("getConstructorLines", () {
     test("1 - simple", () {
       var result = getConstructorLines(
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
       );
 
       expect(
@@ -122,8 +122,8 @@ name: name == null ? this.name : name"""
 
     test("2 - on other type", () {
       var result = getConstructorLines(
-        ClassDef(true, "HasAge", [NameType("age", "int")], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], []),
+        ClassDef(true, "HasAge", [NameType("age", "int")], [], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
       );
 
       expect(
@@ -132,6 +132,21 @@ name: name == null ? this.name : name"""
 age: age == null ? this.age : age,
 name: (this as Person).name"""
               .trim());
+    });
+  });
+
+  group("orderTypes", () {
+    test("1", () {
+      var class_ = ClassDef(false, "Employee", [], [], ["Person"]);
+      var types = [
+        ClassDef(false, "Thing", [], [], [""]),
+        ClassDef(false, "Cleaner", [], [], ["Employee", "HasAge"]),
+        ClassDef(false, "Person", [], [], ["Thing"]),
+      ];
+
+      var result = orderTypes(class_, types).map((e) => e.name).toList();
+
+      expect(result.toString(), "[Cleaner, Employee, Person, Thing]");
     });
   });
 }
