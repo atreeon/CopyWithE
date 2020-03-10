@@ -20,7 +20,7 @@ age: age == null ? this.age : age,
 name: name == null ? this.name : name,
 );}
 throw Exception();
-}}}""";
+}}""";
 
       expect(result, expected);
     });
@@ -54,7 +54,7 @@ age: age == null ? this.age : age,
 name: (this as Employee).name,
 );}
 throw Exception();
-}}}""";
+}}""";
 
       expect(result, expected);
     });
@@ -101,7 +101,7 @@ name: name == null ? this.name : name,
 catStuff: (this as CatOwner).catStuff,
 );}
 throw Exception();
-}}}""";
+}}""";
 
       expect(result, expected);
     });
