@@ -1,4 +1,4 @@
-import 'package:copy_with_e_generator/src/classes.dart';
+import 'package:analyzer_models/analyzer_models.dart';
 import 'package:dartx/dartx.dart';
 
 class DepthClassDef {

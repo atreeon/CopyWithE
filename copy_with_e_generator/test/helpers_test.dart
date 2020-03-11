@@ -1,4 +1,4 @@
-import 'package:copy_with_e_generator/src/classes.dart';
+import 'package:analyzer_models/analyzer_models.dart';
 import 'package:copy_with_e_generator/src/helpers.dart';
 import 'package:test/test.dart';
 
@@ -147,6 +147,18 @@ name: (this as Person).name"""
       var result = orderTypes(class_, types).map((e) => e.name).toList();
 
       expect(result.toString(), "[Cleaner, Employee, Person, Thing]");
+    });
+
+    test("2", () {
+      var class_ = ClassDef(false, "A", [], [], []);
+      var types = [
+        ClassDef(false, "B", [], [], ["A"]),
+        ClassDef(false, "C", [], [], ["B"]),
+      ];
+
+      var result = orderTypes(class_, types).map((e) => e.name).toList();
+
+      expect(result.toString(), "[C, B, A]");
     });
   });
 }

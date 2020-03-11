@@ -1,32 +1,32 @@
-class NameType {
-  final String type;
-  final String name;
-
-  NameType(this.name, this.type);
-}
-
-class ClassDef {
-  final bool isAbstract;
-  final String name;
-  final List<NameType> fields;
-  final List<GenericType> generics;
-  final List<String> baseTypes;
-
-  ClassDef(
-    this.isAbstract,
-    this.name,
-    this.fields,
-    this.generics,
-    this.baseTypes,
-  );
-}
-
-class GenericType {
-  final String name;
-  final String baseType;
-
-  GenericType(this.name, this.baseType);
-}
+//class NameType {
+//  final String type;
+//  final String name;
+//
+//  NameType(this.name, this.type);
+//}
+//
+//class ClassDef {
+//  final bool isAbstract;
+//  final String name;
+//  final List<NameType> fields;
+//  final List<GenericType> generics;
+//  final List<String> baseTypes;
+//
+//  ClassDef(
+//    this.isAbstract,
+//    this.name,
+//    this.fields,
+//    this.generics,
+//    this.baseTypes,
+//  );
+//}
+//
+//class GenericType {
+//  final String name;
+//  final String baseType;
+//
+//  GenericType(this.name, this.baseType);
+//}
 /*
 if List
 

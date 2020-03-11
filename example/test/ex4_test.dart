@@ -29,6 +29,7 @@ class Person implements HasAge {
   });
 }
 
+@CopyWithE()
 class Employee extends Person {
   final int id;
 

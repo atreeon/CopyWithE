@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer_models/analyzer_models.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
-import 'package:copy_with_e_generator/src/classes.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
 import 'package:dartx/dartx.dart';
 import 'package:source_gen/source_gen.dart';
@@ -63,7 +63,13 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
       var subClasses = allClasses //
           .where((x) => x.allSupertypes.any((st) => st.element.name == element.name))
           .where((x) => !types.any((t) => t.name == x.name))
-          .map((x) => ClassDef(x.isAbstract, x.name, getAllFields(x.allSupertypes, x), [], []))
+          .map((x) => ClassDef(
+                x.isAbstract,
+                x.name,
+                getAllFields(x.allSupertypes, x),
+                [],
+                x.interfaces.map((e) => e.element.name).toList(),
+              ))
           .toList();
 
       var types2 = (types + subClasses).distinctBy((y) => y.name).toList();
@@ -76,6 +82,8 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
             GenericType(x.name, x.bound == null ? null : x.bound.toString())).toList(),
         [...element.interfaces.map((e) => e.element.name), element.supertype.element.name],
       );
+
+      sb.writeln("//" + types2.map((e) => e.name).toList().toString());
 
       sb.writeln(createCopyWith(extClass, types2));
     }
