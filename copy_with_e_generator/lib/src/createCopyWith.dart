@@ -8,6 +8,10 @@ String createCopyWith(
   var sb = StringBuffer();
   var types2 = orderTypes(extType, types);
 
+  if (extType.fields.isEmpty) {
+    return "//no fields so not possible to create a CopyWith extension method";
+  }
+
   sb.writeln(getExtensionDef(extType.name) + "{");
   sb.writeln(getCopyWithSignature(extType.name, extType.fields, extType.generics) + "{");
 

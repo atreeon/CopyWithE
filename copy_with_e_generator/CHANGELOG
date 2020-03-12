@@ -1,3 +1,9 @@
+## 1.0.5
+- Check to see if there are any fields (no CopyWith method if no fields)
+
+## 1.0.4
+- Use analyzer_models
+
 ## 1.0.3
 - Allows generics
 
