@@ -2,7 +2,7 @@ import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
-part 'ex11_test.g.dart';
+part 'ex11_.g.dart';
 
 //BUG WITH ABSTRACT WITH NO PROPS
 

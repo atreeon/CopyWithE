@@ -2,10 +2,10 @@ name: copy_with_e_generator
 description: Creates copyWith extension methods for each annotated class and works with abstract too.
 version: 1.0.5
 homepage: https://github.com/atreeon/CopyWithE
- 
+
 environment:  
   sdk: ">=2.6.1 <3.0.0"
-  
+
 dependencies:
   analyzer_models: ^1.0.3
   build: ^1.2.2
