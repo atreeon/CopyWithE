@@ -160,5 +160,18 @@ name: (this as Person).name"""
 
       expect(result.toString(), "[C, B, A]");
     });
+
+    test("3 - was a bug", () {
+      var class_ = ClassDef(false, "Batch_Lesson", [], [], []);
+      var types = [
+        ClassDef(false, "Lesson_Lectures", [], [], ["Batch_Lesson"]),
+        ClassDef(false, "Batch_Staged_Lesson", [], [], ["Batch_Lesson"]),
+        ClassDef(false, "Batch_Staged_Lesson_Lectures", [], [], ["Batch_Staged_Lesson", "Lesson_Lectures"]),
+      ];
+
+      var result = orderTypes(class_, types).map((e) => e.name).toList();
+
+      expect(result.toString(), "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
+    });
   });
 }

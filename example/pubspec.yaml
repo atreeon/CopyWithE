@@ -9,5 +9,6 @@ dependencies:
 dev_dependencies:
   build_runner: ^1.7.3
   test: ^1.9.3
+  meta: ^1.1.8
   copy_with_e_generator:
     path: ../copy_with_e_generator/

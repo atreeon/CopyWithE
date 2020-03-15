@@ -23,7 +23,7 @@ int getDepth(int count, ClassDef thisType, List<ClassDef> types) {
   var related = thisType.baseTypes.intersect(types.map((e) => e.name)).toList();
 
   if (related.length > 1) //
-    throw Exception();
+    return related.map((r) => getDepth(count + 1, types.firstWhere((x) => x.name == r), types)).max();
 
   if (related.length == 0) //
     return count;
