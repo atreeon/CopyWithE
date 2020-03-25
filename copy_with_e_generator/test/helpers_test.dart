@@ -174,4 +174,17 @@ name: (this as Person).name"""
       expect(result.toString(), "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
     });
   });
+
+  group("getConstructorName", () {
+    test("1 normalc", () {
+      var result = getConstructorName("MyClass");
+      expect(result, "MyClass");
+    });
+
+    test("2 privatec", () {
+      var result = getConstructorName("MyClass_");
+
+      expect(result, "MyClass_._");
+    });
+  });
 }

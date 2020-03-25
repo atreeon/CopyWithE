@@ -18,8 +18,11 @@ String createCopyWith(
   types2 //
       .where((x) => !x.isAbstract) //
       .forEach((type) {
+        var constructorName = getConstructorName(type.name);
+        
     sb.writeln("if (this is ${type.name}) {");
-    sb.writeln("return ${type.name}(");
+
+    sb.writeln("return ${constructorName}(");
     sb.writeln(getConstructorLines(extType, type) + ",");
     sb.writeln(");}");
   });

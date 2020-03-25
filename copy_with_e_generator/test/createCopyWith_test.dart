@@ -105,5 +105,26 @@ throw Exception();
 
       expect(result, expected);
     });
+
+    test("4 ", () {
+      var extType = ClassDef(false, "Person_", [
+        NameType("age", "int"),
+        NameType("name", "String"),
+      ], [], []);
+
+      var result = createCopyWith(extType, []).trim();
+
+      var expected = """extension Person_Ext_CopyWithE on Person_{
+Person_ cwPerson_({int age, String name}){
+if (this is Person_) {
+return Person_._(
+age: age == null ? this.age : age,
+name: name == null ? this.name : name,
+);}
+throw Exception();
+}}""";
+
+      expect(result, expected);
+    });
   });
 }

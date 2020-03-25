@@ -88,3 +88,7 @@ String getConstructorLines(ClassDef extType, ClassDef typeType) {
 
 String getExtensionDef(String className) => //
     "extension ${className}Ext_CopyWithE on ${className}";
+
+String getConstructorName(String trimmedClassName) {
+  return trimmedClassName[trimmedClassName.length - 1] == "_" ? "$trimmedClassName._" : trimmedClassName;
+}
