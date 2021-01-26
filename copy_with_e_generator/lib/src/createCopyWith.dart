@@ -18,8 +18,8 @@ String createCopyWith(
   types2 //
       .where((x) => !x.isAbstract) //
       .forEach((type) {
-        var constructorName = getConstructorName(type.name);
-        
+    var constructorName = getConstructorName(type.name);
+
     sb.writeln("if (this is ${type.name}) {");
 
     sb.writeln("return ${constructorName}(");
@@ -30,7 +30,7 @@ String createCopyWith(
   sb.writeln("throw Exception();");
   sb.writeln("}}");
 
-  return sb.toString();
+  return sb.toString().replaceAll("*", "");
 }
 
 //  sb.writeln("//" + extType.name);
