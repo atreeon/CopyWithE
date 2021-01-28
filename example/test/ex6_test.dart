@@ -33,5 +33,5 @@ class Employee implements IPerson {
   final int age;
   final String name2;
 
-  Employee({this.id, this.age, this.name2});
+  Employee({required this.id, required this.age, required this.name2});
 }

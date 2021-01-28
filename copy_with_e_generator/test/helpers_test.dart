@@ -4,18 +4,18 @@ import 'package:test/test.dart';
 
 void main() {
   group("getCopyWithParamList", () {
-    test("1", () {
+    test("1a", () {
       var fields = [
         NameType("age", "int"),
-        NameType("name", "String"),
+        NameType("name", "String?"),
       ];
 
       var result = getCopyWithParamList(fields, []);
 
-      expect(result, "int age, String name");
+      expect(result, "int? age, String? name");
     });
 
-    test("2 generic", () {
+    test("2a generic", () {
       var result = getCopyWithParamList(
         [
           NameType("id", "T"),
@@ -28,10 +28,12 @@ void main() {
         ],
       );
 
-      expect(result, "T id, String name, List<TPet> pets");
+      expect(result, "T? id, String? name, List<TPet>? pets");
     });
 
-    test("3 generic (order of generics caused a bug because T was found inside TPet!)", () {
+    test(
+        "3a generic (order of generics caused a bug because T was found inside TPet!)",
+        () {
       var result = getCopyWithParamList(
         [
           NameType("id", "T"),
@@ -44,7 +46,18 @@ void main() {
         ],
       );
 
-      expect(result, "T id, String name, List<TPet> pets");
+      expect(result, "T? id, String? name, List<TPet>? pets");
+    });
+
+    test("4a null safety", () {
+      var fields = [
+        NameType("age", "int"),
+        NameType("name", "String?"),
+      ];
+
+      var result = getCopyWithParamList(fields, []);
+
+      expect(result, "int? age, String? name");
     });
   });
 
@@ -59,7 +72,7 @@ void main() {
         [],
       );
 
-      expect(result, "Person cwPerson({int age, String name})");
+      expect(result, "Person cwPerson({int? age, String? name})");
     });
 
     test("2", () {
@@ -76,7 +89,7 @@ void main() {
         ],
       );
 
-      expect(result, "A cwA<T1, T2>({T1 a, T2 b, int c})");
+      expect(result, "A cwA<T1, T2>({T1? a, T2? b, int? c})");
     });
 
     test("3", () {
@@ -93,44 +106,47 @@ void main() {
         ],
       );
 
-      expect(result, "A cwA<T1, TPet extends Pet>({T1 a, T2 b, int c})");
+      expect(result, "A cwA<T1, TPet extends Pet>({T1? a, T2? b, int? c})");
     });
   });
 
   group("getPropertySet", () {
     test("1", () {
-      var result = getPropertySet("age");
+      var result = getPropertySet("age", "int");
 
-      expect(result, "age: age == null ? this.age : age");
+      expect(result, "age: age == null ? this.age as int : age as int");
     });
   });
 
   group("getConstructorLines", () {
     test("1 - simple", () {
       var result = getConstructorLines(
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
+        ClassDef(false, "Person",
+            [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(false, "Person",
+            [NameType("age", "int"), NameType("name", "String?")], [], []),
       );
 
       expect(
           result,
           """
-age: age == null ? this.age : age,
-name: name == null ? this.name : name"""
+age: age == null ? this.age as int : age as int,
+name: name == null ? this.name as String? : name as String?"""
               .trim());
     });
 
     test("2 - on other type", () {
       var result = getConstructorLines(
         ClassDef(true, "HasAge", [NameType("age", "int")], [], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String")], [], []),
+        ClassDef(false, "Person",
+            [NameType("age", "int"), NameType("name", "String?")], [], []),
       );
 
       expect(
           result,
           """
-age: age == null ? this.age : age,
-name: (this as Person).name"""
+age: age == null ? this.age as int : age as int,
+name: (this as Person).name as String?"""
               .trim());
     });
   });
@@ -166,12 +182,14 @@ name: (this as Person).name"""
       var types = [
         ClassDef(false, "Lesson_Lectures", [], [], ["Batch_Lesson"]),
         ClassDef(false, "Batch_Staged_Lesson", [], [], ["Batch_Lesson"]),
-        ClassDef(false, "Batch_Staged_Lesson_Lectures", [], [], ["Batch_Staged_Lesson", "Lesson_Lectures"]),
+        ClassDef(false, "Batch_Staged_Lesson_Lectures", [], [],
+            ["Batch_Staged_Lesson", "Lesson_Lectures"]),
       ];
 
       var result = orderTypes(class_, types).map((e) => e.name).toList();
 
-      expect(result.toString(), "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
+      expect(result.toString(),
+          "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
     });
   });
 

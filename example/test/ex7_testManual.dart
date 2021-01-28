@@ -29,10 +29,14 @@ main() {
             name: "Bad " + petOwner.name,
             pets: () {
               if (petOwner is DogOwner) //
-                return petOwner.pets.map<Dog>((x) => x.cwPet(isAlive: false)).toList();
+                return petOwner.pets
+                    .map<Dog>((x) => x.cwPet(isAlive: false) as Dog)
+                    .toList();
 
               if (petOwner is CatOwner) //
-                return petOwner.pets.map<Cat>((x) => x.cwPet(isAlive: false)).toList();
+                return petOwner.pets
+                    .map<Cat>((x) => x.cwPet(isAlive: false) as Cat)
+                    .toList();
 
               throw Exception("unexpected owner");
             }(),
@@ -57,18 +61,26 @@ class DogOwner implements PetOwnerBase<Dog, int> {
   final int id;
   final List<Dog> pets;
   final String name;
-  final String dogStuff;
+  final String? dogStuff;
 
-  DogOwner({this.id, this.pets, this.name, this.dogStuff});
+  DogOwner(
+      {required this.id,
+      required this.pets,
+      required this.name,
+      this.dogStuff});
 }
 
 class CatOwner implements PetOwnerBase<Cat, String> {
   final String id;
   final List<Cat> pets;
   final String name;
-  final String catStuff;
+  final String? catStuff;
 
-  CatOwner({this.id, this.pets, this.name, this.catStuff});
+  CatOwner(
+      {required this.id,
+      required this.pets,
+      required this.name,
+      this.catStuff});
 }
 
 abstract class Pet {
@@ -79,14 +91,14 @@ class Dog extends Pet {
   final bool isAlive;
   final String woofType;
 
-  Dog({this.isAlive, this.woofType});
+  Dog({required this.isAlive, required this.woofType});
 }
 
 class Cat extends Pet {
   final bool isAlive;
   final String whiskers;
 
-  Cat({this.isAlive, this.whiskers});
+  Cat({required this.isAlive, required this.whiskers});
 }
 
 //cwPetOwnerBase takes in a list of pets
@@ -94,7 +106,7 @@ class Cat extends Pet {
 //I can set dogs to pets but not pets to dogs
 
 extension PetOwnerBaseExt_CopyWithE on PetOwnerBase {
-  PetOwnerBase cwPetOwnerBase({String name, List<Pet> pets}) {
+  PetOwnerBase cwPetOwnerBase({String? name, List<Pet>? pets}) {
     switch (this.runtimeType) {
       case DogOwner:
         //why are we not breaking in the correct place?
@@ -102,7 +114,7 @@ extension PetOwnerBaseExt_CopyWithE on PetOwnerBase {
           id: id == null ? this.id : id,
           pets: pets == null //
               ? this.pets as List<Dog>
-              : pets,
+              : pets as List<Dog>,
           name: name == null //
               ? this.name
               : name,
@@ -112,8 +124,8 @@ extension PetOwnerBaseExt_CopyWithE on PetOwnerBase {
         return CatOwner(
           id: id == null ? this.id : id,
           pets: pets == null //
-              ? this.pets
-              : pets,
+              ? this.pets as List<Cat>
+              : pets as List<Cat>,
           name: name == null //
               ? this.name
               : name,
@@ -128,7 +140,7 @@ extension PetOwnerBaseExt_CopyWithE on PetOwnerBase {
 //RULES: 1 all subtypes must be in same file or be passed in. 2 the types passed in must all be classes
 //no generics
 extension PetExt_CopyWithE on Pet {
-  Pet cwPet({bool isAlive}) {
+  Pet cwPet({bool? isAlive}) {
     switch (this.runtimeType) {
       case Dog:
         return Dog(

@@ -1,5 +1,4 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
-import 'package:meta/meta.dart';
 
 part 'ex11_.g.dart';
 
@@ -18,6 +17,6 @@ abstract class A extends $$A {}
 class B extends $B implements A {
   final int a;
   B({
-    @required this.a,
-  }) : assert(a != null);
+    required this.a,
+  });
 }

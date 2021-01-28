@@ -1,5 +1,4 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
 part 'ex10_test.g.dart';
@@ -38,7 +37,7 @@ main() {
     var c1 = c.cwA(a: "Ac1");
     expect(c1.a, "Ac1");
     expect((c1 as C).b, 1);
-    expect((c1 as C).c, true);
+    expect((c1).c, true);
 
     var c2 = c.cwB(a: "Ac1", b: 3);
     expect(c2.a, "Ac1");
@@ -56,8 +55,8 @@ main() {
 class A extends $A {
   final String a;
   A({
-    @required this.a,
-  }) : assert(a != null);
+    required this.a,
+  });
 }
 
 @CopyWithE()
@@ -65,10 +64,9 @@ class B extends $B implements A {
   final String a;
   final int b;
   B({
-    @required this.a,
-    @required this.b,
-  })  : assert(a != null),
-        assert(b != null);
+    required this.a,
+    required this.b,
+  });
 }
 
 @CopyWithE()
@@ -77,10 +75,8 @@ class C extends $C implements B {
   final int b;
   final bool c;
   C({
-    @required this.a,
-    @required this.b,
-    @required this.c,
-  })  : assert(a != null),
-        assert(b != null),
-        assert(c != null);
+    required this.a,
+    required this.b,
+    required this.c,
+  });
 }

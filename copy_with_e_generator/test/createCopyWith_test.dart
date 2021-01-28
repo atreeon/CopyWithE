@@ -7,17 +7,17 @@ void main() {
     test("1", () {
       var extType = ClassDef(false, "Person", [
         NameType("age", "int"),
-        NameType("name", "String"),
+        NameType("name", "String?"),
       ], [], []);
 
       var result = createCopyWith(extType, []).trim();
 
       var expected = """extension PersonExt_CopyWithE on Person{
-Person cwPerson({int age, String name}){
+Person cwPerson({int? age, String? name}){
 if (this is Person) {
 return Person(
-age: age == null ? this.age : age,
-name: name == null ? this.name : name,
+age: age == null ? this.age as int : age as int,
+name: name == null ? this.name as String? : name as String?,
 );}
 throw Exception();
 }}""";
@@ -42,16 +42,16 @@ throw Exception();
       ]).trim();
 
       var expected = """extension HasAgeExt_CopyWithE on HasAge{
-HasAge cwHasAge({int age}){
+HasAge cwHasAge({int? age}){
 if (this is Person) {
 return Person(
-age: age == null ? this.age : age,
-name: (this as Person).name,
+age: age == null ? this.age as int : age as int,
+name: (this as Person).name as String,
 );}
 if (this is Employee) {
 return Employee(
-age: age == null ? this.age : age,
-name: (this as Employee).name,
+age: age == null ? this.age as int : age as int,
+name: (this as Employee).name as String,
 );}
 throw Exception();
 }}""";
@@ -63,7 +63,7 @@ throw Exception();
       var extType = ClassDef(true, "PetOwnerBase", [
         NameType("id", "T"),
         NameType("name", "String"),
-        NameType("pets", "List<TPet>"),
+        NameType("pets", "List<TPet>?"),
       ], [
         GenericType("T", null),
         GenericType("TPet", "Pet"),
@@ -72,33 +72,33 @@ throw Exception();
       var result = createCopyWith(extType, [
         ClassDef(false, "DogOwner", [
           NameType("id", "int"),
-          NameType("pets", "List<Dog>"),
+          NameType("pets", "List<Dog>?"),
           NameType("name", "String"),
           NameType("dogStuff", "String"),
         ], [], []),
         ClassDef(false, "CatOwner", [
           NameType("id", "int"),
-          NameType("pets", "List<Cat>"),
+          NameType("pets", "List<Cat>?"),
           NameType("name", "String"),
           NameType("catStuff", "String"),
         ], [], []),
       ]).trim();
 
       var expected = """extension PetOwnerBaseExt_CopyWithE on PetOwnerBase{
-PetOwnerBase cwPetOwnerBase<T, TPet extends Pet>({T id, String name, List<TPet> pets}){
+PetOwnerBase cwPetOwnerBase<T, TPet extends Pet>({T? id, String? name, List<TPet>? pets}){
 if (this is DogOwner) {
 return DogOwner(
-id: id == null ? this.id : id,
-pets: pets == null ? this.pets : pets,
-name: name == null ? this.name : name,
-dogStuff: (this as DogOwner).dogStuff,
+id: id == null ? this.id as int : id as int,
+pets: pets == null ? this.pets as List<Dog>? : pets as List<Dog>?,
+name: name == null ? this.name as String : name as String,
+dogStuff: (this as DogOwner).dogStuff as String,
 );}
 if (this is CatOwner) {
 return CatOwner(
-id: id == null ? this.id : id,
-pets: pets == null ? this.pets : pets,
-name: name == null ? this.name : name,
-catStuff: (this as CatOwner).catStuff,
+id: id == null ? this.id as int : id as int,
+pets: pets == null ? this.pets as List<Cat>? : pets as List<Cat>?,
+name: name == null ? this.name as String : name as String,
+catStuff: (this as CatOwner).catStuff as String,
 );}
 throw Exception();
 }}""";
@@ -115,11 +115,11 @@ throw Exception();
       var result = createCopyWith(extType, []).trim();
 
       var expected = """extension Person_Ext_CopyWithE on Person_{
-Person_ cwPerson_({int age, String name}){
+Person_ cwPerson_({int? age, String? name}){
 if (this is Person_) {
 return Person_._(
-age: age == null ? this.age : age,
-name: name == null ? this.name : name,
+age: age == null ? this.age as int : age as int,
+name: name == null ? this.name as String : name as String,
 );}
 throw Exception();
 }}""";

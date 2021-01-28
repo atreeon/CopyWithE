@@ -51,7 +51,7 @@ abstract class GeneratorForAnnotationX<T> extends Generator {
         classElements,
       );
       await for (var value in normalizeGeneratorOutput(generatedValue)) {
-        assert(value == null || (value.length == value.trim().length));
+        assert(value.length == value.trim().length);
         values.add(value);
       }
     }

@@ -14,9 +14,9 @@ class Y extends X {
 
 @CopyWithE()
 class A<T1, T2 extends X> {
-  final T1 a;
-  final T2 b;
-  final int c;
+  final T1? a;
+  final T2? b;
+  final int? c;
 
   A({this.a, this.b, this.c});
 }
@@ -28,7 +28,7 @@ main() {
     var copy = a.cwA(a: 9, b: Y(4), c: 1);
 
     expect(copy.a, 9);
-    expect(copy.b.a, 4);
+    expect((copy.b as Y).a, 4);
     expect(copy.c, 1);
   });
 }

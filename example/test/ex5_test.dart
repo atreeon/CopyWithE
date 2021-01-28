@@ -18,21 +18,21 @@ main() {
   });
 }
 
-@CopyWithE([Stuff, Employee]) //[Person, Employee])
+@CopyWithE([Stuff]) //[Person, Employee])
 abstract class HasAge2 {
   int get age;
 }
 
 class Person implements HasAge2 {
   final int age;
-  final String name;
+  final String? name;
 
-  Person({this.age, this.name});
+  Person({required this.age, this.name});
 }
 
 class Employee implements Person {
   final int age;
   final String name;
 
-  Employee({this.age, this.name});
+  Employee({required this.age, required this.name});
 }

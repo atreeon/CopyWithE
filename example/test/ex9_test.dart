@@ -1,5 +1,4 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:test/test.dart';
 
 part 'ex9_test.g.dart';
@@ -8,7 +7,7 @@ part 'ex9_test.g.dart';
 
 main() {
   test("1", () {
-    var b = B(x: 1, y: "Yb", z:"Zb");
+    var b = B(x: 1, y: "Yb", z: "Zb");
 
     var b1 = b.cwA(x: 2, y: "Yb1");
     expect(b1.x, 2);
@@ -42,10 +41,8 @@ class B extends $B implements A<int, String> {
   final String y;
   final String z;
   B({
-    @required this.x,
-    @required this.y,
-    @required this.z,
-  })  : assert(x != null),
-        assert(y != null),
-        assert(z != null);
+    required this.x,
+    required this.y,
+    required this.z,
+  });
 }

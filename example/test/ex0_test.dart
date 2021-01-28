@@ -1,7 +1,9 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:test/test.dart';
 
-part 'ex1_test.g.dart';
+import 'ex4_test.dart';
+
+part 'ex0_test.g.dart';
 
 @CopyWithE()
 class Person {
@@ -9,8 +11,6 @@ class Person {
   final String? name;
 
   Person({required this.age, this.name});
-
-  String toString() => "${age.toString()}, ${name.toString()}";
 }
 
 main() {

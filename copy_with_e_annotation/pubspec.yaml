@@ -1,9 +1,9 @@
 name: copy_with_e_annotation
 description: Creates a copyWith extension method for the object the attribute is specified on and the objects in the list
-version: 1.0.1
+version: 1.0.2-nullsafety2
 
 environment:  
-  sdk: ">=2.7.2 <3.0.0"
+  sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
 

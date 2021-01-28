@@ -39,10 +39,10 @@ if List
 //  final List<GenericType> generics;
 //
 //  ClassDefWithGenericTypes({
-//    @required this.generics,
-//    @required bool isAbstract,
-//    @required String name,
-//    @required List<NameType> fields,
+//    required this.generics,
+//    required bool isAbstract,
+//    required String name,
+//    required List<NameType> fields,
 //  }) : super(isAbstract, name, fields);
 //}
 //

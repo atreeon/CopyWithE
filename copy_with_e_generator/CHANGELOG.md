@@ -1,3 +1,9 @@
+## 1.0.10-nullsafety2
+- readme file
+
+## 1.0.10-nullsafety1
+- null safety
+
 ## 1.0.9
 - analyzer to 41
 
