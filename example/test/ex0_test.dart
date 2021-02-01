@@ -1,9 +1,9 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:test/test.dart';
 
-import 'ex4_test.dart';
-
 part 'ex0_test.g.dart';
+
+// NULLABLE TEST
 
 @CopyWithE()
 class Person {
@@ -11,6 +11,8 @@ class Person {
   final String? name;
 
   Person({required this.age, this.name});
+
+  String toString() => "${age.toString()}, ${name.toString()}";
 }
 
 main() {

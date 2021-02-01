@@ -16,7 +16,9 @@ void main() {
 Person cwPerson({int? age, String? name}){
 if (this is Person) {
 return Person(
+// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: name == null ? this.name as String? : name as String?,
 );}
 throw Exception();
@@ -45,12 +47,16 @@ throw Exception();
 HasAge cwHasAge({int? age}){
 if (this is Person) {
 return Person(
+// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: (this as Person).name as String,
 );}
 if (this is Employee) {
 return Employee(
+// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: (this as Employee).name as String,
 );}
 throw Exception();
@@ -88,16 +94,24 @@ throw Exception();
 PetOwnerBase cwPetOwnerBase<T, TPet extends Pet>({T? id, String? name, List<TPet>? pets}){
 if (this is DogOwner) {
 return DogOwner(
+// ignore: UNNECESSARY_CAST
 id: id == null ? this.id as int : id as int,
+// ignore: UNNECESSARY_CAST
 pets: pets == null ? this.pets as List<Dog>? : pets as List<Dog>?,
+// ignore: UNNECESSARY_CAST
 name: name == null ? this.name as String : name as String,
+// ignore: UNNECESSARY_CAST
 dogStuff: (this as DogOwner).dogStuff as String,
 );}
 if (this is CatOwner) {
 return CatOwner(
+// ignore: UNNECESSARY_CAST
 id: id == null ? this.id as int : id as int,
+// ignore: UNNECESSARY_CAST
 pets: pets == null ? this.pets as List<Cat>? : pets as List<Cat>?,
+// ignore: UNNECESSARY_CAST
 name: name == null ? this.name as String : name as String,
+// ignore: UNNECESSARY_CAST
 catStuff: (this as CatOwner).catStuff as String,
 );}
 throw Exception();
@@ -118,7 +132,9 @@ throw Exception();
 Person_ cwPerson_({int? age, String? name}){
 if (this is Person_) {
 return Person_._(
+// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: name == null ? this.name as String : name as String,
 );}
 throw Exception();

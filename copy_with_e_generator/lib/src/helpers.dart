@@ -23,16 +23,12 @@ int getDepth(int count, ClassDef thisType, List<ClassDef> types) {
   var related = thisType.baseTypes.intersect(types.map((e) => e.name)).toList();
 
   if (related.length > 1) //
-    return related
-        .map((r) =>
-            getDepth(count + 1, types.firstWhere((x) => x.name == r), types))
-        .max();
+    return related.map((r) => getDepth(count + 1, types.firstWhere((x) => x.name == r), types)).max();
 
   if (related.length == 0) //
     return count;
 
-  return getDepth(
-      count + 1, types.firstWhere((x) => x.name == related[0]), types);
+  return getDepth(count + 1, types.firstWhere((x) => x.name == related[0]), types);
 }
 
 String getCopyWithParamList(
@@ -72,18 +68,28 @@ String getGenericParams(List<GenericType> generics) {
   return "<$genericList>";
 }
 
-String getPropertySetThis(String className, String fieldName, String type) => //
-    "$fieldName: (this as $className).$fieldName as $type";
+String getPropertySetThis(String className, String fieldName, String type, List<GenericType> generics) {
+  if (generics.any((x) => x.name == type)) //
+    return "$fieldName: (this as $className).$fieldName";
 
-String getPropertySet(String name, String type) => //
-    "$name: $name == null ? this.$name as $type : $name as $type";
+  return """// ignore: UNNECESSARY_CAST
+$fieldName: (this as $className).$fieldName as $type""";
+}
 
-String getConstructorLines(ClassDef extType, ClassDef typeType) {
+String getPropertySet(String name, String type, List<GenericType> generics) {
+  if (generics.any((x) => x.name == type)) //
+    return "$name: $name == null ? this.$name : $name";
+
+  return """// ignore: UNNECESSARY_CAST
+$name: $name == null ? this.$name as $type : $name as $type""";
+}
+
+String getConstructorLines(ClassDef extType, ClassDef typeType, List<GenericType> generics) {
   var result = typeType.fields.map((field) {
     if (extType.fields.any((x) => field.name == x.name)) {
-      return getPropertySet(field.name, field.type);
+      return getPropertySet(field.name, field.type, generics);
     } else {
-      return getPropertySetThis(typeType.name, field.name, field.type);
+      return getPropertySetThis(typeType.name, field.name, field.type, generics);
     }
   }).joinToString(separator: ",\n");
 
@@ -94,7 +100,5 @@ String getExtensionDef(String className) => //
     "extension ${className}Ext_CopyWithE on ${className}";
 
 String getConstructorName(String trimmedClassName) {
-  return trimmedClassName[trimmedClassName.length - 1] == "_"
-      ? "$trimmedClassName._"
-      : trimmedClassName;
+  return trimmedClassName[trimmedClassName.length - 1] == "_" ? "$trimmedClassName._" : trimmedClassName;
 }

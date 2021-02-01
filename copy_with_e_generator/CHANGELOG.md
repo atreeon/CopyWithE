@@ -1,3 +1,12 @@
+## 1.0.10-nullsafety5
+- type parameters should not be cast
+
+## 1.0.10-nullsafety4
+- tuple dependency removed
+
+## 1.0.10-nullsafety3
+- ignore unnecessary cast
+
 ## 1.0.10-nullsafety2
 - readme file
 

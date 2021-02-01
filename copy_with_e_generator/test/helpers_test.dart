@@ -31,9 +31,7 @@ void main() {
       expect(result, "T? id, String? name, List<TPet>? pets");
     });
 
-    test(
-        "3a generic (order of generics caused a bug because T was found inside TPet!)",
-        () {
+    test("3a generic (order of generics caused a bug because T was found inside TPet!)", () {
       var result = getCopyWithParamList(
         [
           NameType("id", "T"),
@@ -62,7 +60,7 @@ void main() {
   });
 
   group("getCopyWithSignature", () {
-    test("1", () {
+    test("1b", () {
       var result = getCopyWithSignature(
         "Person",
         [
@@ -75,7 +73,7 @@ void main() {
       expect(result, "Person cwPerson({int? age, String? name})");
     });
 
-    test("2", () {
+    test("2b", () {
       var result = getCopyWithSignature(
         "A",
         [
@@ -92,7 +90,7 @@ void main() {
       expect(result, "A cwA<T1, T2>({T1? a, T2? b, int? c})");
     });
 
-    test("3", () {
+    test("3b", () {
       var result = getCopyWithSignature(
         "A",
         [
@@ -111,48 +109,56 @@ void main() {
   });
 
   group("getPropertySet", () {
-    test("1", () {
-      var result = getPropertySet("age", "int");
+    test("1c", () {
+      var result = getPropertySet("age", "int", []);
 
-      expect(result, "age: age == null ? this.age as int : age as int");
+      expect(result, """// ignore: UNNECESSARY_CAST
+age: age == null ? this.age as int : age as int""");
+    });
+
+    test("2c", () {
+      var result = getPropertySet("age", "T1", [GenericType("T1", null)]);
+
+      expect(result, "age: age == null ? this.age : age");
     });
   });
 
   group("getConstructorLines", () {
-    test("1 - simple", () {
+    test("1d - simple", () {
       var result = getConstructorLines(
-        ClassDef(false, "Person",
-            [NameType("age", "int"), NameType("name", "String?")], [], []),
-        ClassDef(false, "Person",
-            [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
+        [],
       );
 
       expect(
           result,
-          """
+          """// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: name == null ? this.name as String? : name as String?"""
               .trim());
     });
 
-    test("2 - on other type", () {
+    test("2d - on other type", () {
       var result = getConstructorLines(
         ClassDef(true, "HasAge", [NameType("age", "int")], [], []),
-        ClassDef(false, "Person",
-            [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
+        [],
       );
 
       expect(
           result,
-          """
+          """// ignore: UNNECESSARY_CAST
 age: age == null ? this.age as int : age as int,
+// ignore: UNNECESSARY_CAST
 name: (this as Person).name as String?"""
               .trim());
     });
   });
 
   group("orderTypes", () {
-    test("1", () {
+    test("1e", () {
       var class_ = ClassDef(false, "Employee", [], [], ["Person"]);
       var types = [
         ClassDef(false, "Thing", [], [], [""]),
@@ -165,7 +171,7 @@ name: (this as Person).name as String?"""
       expect(result.toString(), "[Cleaner, Employee, Person, Thing]");
     });
 
-    test("2", () {
+    test("2e", () {
       var class_ = ClassDef(false, "A", [], [], []);
       var types = [
         ClassDef(false, "B", [], [], ["A"]),
@@ -177,29 +183,27 @@ name: (this as Person).name as String?"""
       expect(result.toString(), "[C, B, A]");
     });
 
-    test("3 - was a bug", () {
+    test("3e - was a bug", () {
       var class_ = ClassDef(false, "Batch_Lesson", [], [], []);
       var types = [
         ClassDef(false, "Lesson_Lectures", [], [], ["Batch_Lesson"]),
         ClassDef(false, "Batch_Staged_Lesson", [], [], ["Batch_Lesson"]),
-        ClassDef(false, "Batch_Staged_Lesson_Lectures", [], [],
-            ["Batch_Staged_Lesson", "Lesson_Lectures"]),
+        ClassDef(false, "Batch_Staged_Lesson_Lectures", [], [], ["Batch_Staged_Lesson", "Lesson_Lectures"]),
       ];
 
       var result = orderTypes(class_, types).map((e) => e.name).toList();
 
-      expect(result.toString(),
-          "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
+      expect(result.toString(), "[Batch_Staged_Lesson_Lectures, Lesson_Lectures, Batch_Staged_Lesson, Batch_Lesson]");
     });
   });
 
   group("getConstructorName", () {
-    test("1 normalc", () {
+    test("1f normalc", () {
       var result = getConstructorName("MyClass");
       expect(result, "MyClass");
     });
 
-    test("2 privatec", () {
+    test("2f privatec", () {
       var result = getConstructorName("MyClass_");
 
       expect(result, "MyClass_._");

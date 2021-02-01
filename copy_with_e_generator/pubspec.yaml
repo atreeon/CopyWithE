@@ -1,6 +1,6 @@
 name: copy_with_e_generator
 description: Creates copyWith extension methods for each annotated class and works with abstract too.
-version: 1.0.10-nullsafety2
+version: 1.0.10-nullsafety5
 homepage: https://github.com/atreeon/CopyWithE
 
 environment:  
@@ -12,7 +12,7 @@ dependencies:
   source_gen: ^0.9.4+7
   copy_with_e_annotation: ^1.0.2-nullsafety2
   dartx: '>=0.3.0 <0.7.0'
-  tuple: ^1.0.3
+#  tuple: ^1.0.3
   basic_utils: ^2.4.8
   analyzer: '>=0.40.0 <0.42.0'
 
