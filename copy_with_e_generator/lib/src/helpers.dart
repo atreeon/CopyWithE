@@ -1,3 +1,4 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:analyzer_models/analyzer_models.dart';
 import 'package:dartx/dartx.dart';
 
@@ -23,7 +24,7 @@ int getDepth(int count, ClassDef thisType, List<ClassDef> types) {
   var related = thisType.baseTypes.intersect(types.map((e) => e.name)).toList();
 
   if (related.length > 1) //
-    return related.map((r) => getDepth(count + 1, types.firstWhere((x) => x.name == r), types)).max();
+    return related.map((r) => getDepth(count + 1, types.firstWhere((x) => x.name == r), types)).max()!;
 
   if (related.length == 0) //
     return count;
@@ -72,16 +73,14 @@ String getPropertySetThis(String className, String fieldName, String type, List<
   if (generics.any((x) => x.name == type)) //
     return "$fieldName: (this as $className).$fieldName";
 
-  return """// ignore: UNNECESSARY_CAST
-$fieldName: (this as $className).$fieldName as $type""";
+  return "$fieldName: (this as $className).$fieldName as $type";
 }
 
 String getPropertySet(String name, String type, List<GenericType> generics) {
   if (generics.any((x) => x.name == type)) //
     return "$name: $name == null ? this.$name : $name";
 
-  return """// ignore: UNNECESSARY_CAST
-$name: $name == null ? this.$name as $type : $name as $type""";
+  return "$name: $name == null ? this.$name as $type : $name as $type";
 }
 
 String getConstructorLines(ClassDef extType, ClassDef typeType, List<GenericType> generics) {

@@ -1,3 +1,4 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:analyzer_models/analyzer_models.dart';
 import 'package:copy_with_e_generator/src/helpers.dart';
 import 'package:test/test.dart';
@@ -112,8 +113,7 @@ void main() {
     test("1c", () {
       var result = getPropertySet("age", "int", []);
 
-      expect(result, """// ignore: UNNECESSARY_CAST
-age: age == null ? this.age as int : age as int""");
+      expect(result, "age: age == null ? this.age as int : age as int");
     });
 
     test("2c", () {
@@ -133,9 +133,7 @@ age: age == null ? this.age as int : age as int""");
 
       expect(
           result,
-          """// ignore: UNNECESSARY_CAST
-age: age == null ? this.age as int : age as int,
-// ignore: UNNECESSARY_CAST
+          """age: age == null ? this.age as int : age as int,
 name: name == null ? this.name as String? : name as String?"""
               .trim());
     });
@@ -149,9 +147,7 @@ name: name == null ? this.name as String? : name as String?"""
 
       expect(
           result,
-          """// ignore: UNNECESSARY_CAST
-age: age == null ? this.age as int : age as int,
-// ignore: UNNECESSARY_CAST
+          """age: age == null ? this.age as int : age as int,
 name: (this as Person).name as String?"""
               .trim());
     });

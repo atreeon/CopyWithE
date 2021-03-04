@@ -1,3 +1,6 @@
+## 1.0.10-nullsafety6
+- ignore cast for file
+
 ## 1.0.10-nullsafety5
 - type parameters should not be cast
 

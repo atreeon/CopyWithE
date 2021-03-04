@@ -2,11 +2,14 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:analyzer_models/analyzer_models.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:build/src/builder/build_step.dart';
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
 import 'package:dartx/dartx.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen/source_gen.dart';
 
 import 'GeneratorForAnnotationX.dart';
@@ -42,22 +45,20 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
           .read('types') //
           .listValue
           .map((x) {
-        var el = x.toTypeValue().element;
+        var el = x.toTypeValue()!.element;
 
         if (el is! ClassElement) {
           throw Exception("the list of types for the copywith def must all be classes");
         }
 
-        var ce = (el as ClassElement);
-
         return ClassDef(
-          ce.isAbstract,
-          ce.name,
-          getAllFields(ce.allSupertypes, ce),
-          ce.typeParameters.map((e) => GenericType(e.name, e.bound.toString())).toList(),
+          el.isAbstract,
+          el.name,
+          getAllFields(el.allSupertypes, el),
+          el.typeParameters.map((e) => GenericType(e.name, e.bound.toString())).toList(),
           [
-            ...ce.interfaces.map((e) => e.element.name),
-            ce.supertype.element.name,
+            ...el.interfaces.map((e) => e.element.name),
+            el.supertype!.element.name,
           ],
         );
       }).toList();
@@ -85,22 +86,24 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
         element.typeParameters.isEmpty //
             ? []
             : element.typeParameters //
-                .where((x) => x.name != null)
                 .map((x) => GenericType(x.name, x.bound == null ? null : x.bound.toString()))
                 .toList(),
         [
           ...element.interfaces.map((e) => e.element.name),
-          element.supertype.element.name,
+          element.supertype!.element.name,
         ],
       );
 
+      sb.writeln("// ignore: duplicate_ignore");
+
+      sb.writeln("// ignore_for_file: UNNECESSARY_CAST");
 //      sb.writeln("/*" + extClass.fields.toString() + "*/");
 
       sb.writeln(createCopyWith(extClass, types2));
     }
 
-    return element.session //
-        .getResolvedLibraryByElement(element.library)
+    return element.session! //
+        .getResolvedLibraryByElement(element.library!)
         .then((resolvedLibrary) {
       return sb.toString();
     });

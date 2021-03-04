@@ -61,6 +61,6 @@ class D implements C, X {
 
 main() {
   test("1", () {
-    var b = B(x: 1, y: D(z: "blah", t: "blim", p: "plop"), z: "blah");
+    B(x: 1, y: D(z: "blah", t: "blim", p: "plop"), z: "blah");
   });
 }

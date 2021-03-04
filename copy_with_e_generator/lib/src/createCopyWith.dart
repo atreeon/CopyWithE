@@ -1,3 +1,4 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:analyzer_models/analyzer_models.dart';
 import 'package:copy_with_e_generator/src/helpers.dart';
 
