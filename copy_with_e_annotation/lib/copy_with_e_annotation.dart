@@ -3,3 +3,9 @@ class CopyWithE {
 
   const CopyWithE([this.types]);
 }
+
+class Opt<T> {
+  final T? value;
+
+  Opt(this.value);
+}

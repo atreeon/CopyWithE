@@ -18,7 +18,7 @@ class Person {
 main() {
   test("1", () {
     var bob = Person(age: 5, name: "bob");
-    var result = bob.cwPerson(age: 6, name: "bobby");
+    var result = bob.cwPerson(age: Opt(6), name: Opt("bobby"));
     expect(result.toString(), "6, bobby");
   });
 }

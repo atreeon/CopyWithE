@@ -8,7 +8,7 @@ main() {
       "ALL FIELDS FROM MY CONCRETE EXTENDED SUPERCLASS SHOULD BE INCLUDED IN MY COPYWITH EXTENSION METHOD",
       () {
     var rob = Employee(age: 9, name: "rob", id: 5);
-    var robEdited = rob.cwPerson(age: 3);
+    var robEdited = rob.cwPerson(age: Opt(3));
 
     expect(robEdited is Employee, true);
     expect(robEdited.toString(), "5|3|rob");

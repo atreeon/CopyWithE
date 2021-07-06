@@ -9,11 +9,11 @@ main() {
   test("1", () {
     var b = B(x: 1, y: "Yb", z: "Zb");
 
-    var b1 = b.cwA(x: 2, y: "Yb1");
+    var b1 = b.cwA(x: Opt(2), y: Opt("Yb1"));
     expect(b1.x, 2);
     expect((b1 as B).y, "Yb1");
 
-    var b2 = b.cwB(x: 3, y: "Yb2", z: "Zb2");
+    var b2 = b.cwB(x: Opt(3), y: Opt("Yb2"), z: Opt("Zb2"));
     expect(b2.x, 3);
     expect(b2.y, "Yb2");
     expect(b2.z, "Zb2");

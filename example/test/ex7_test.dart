@@ -26,20 +26,16 @@ main() {
     var result = petOwners
         .map(
           (petOwner) => petOwner.cwPetOwnerBase(
-            name: "Bad " + petOwner.name,
-            pets: () {
+            name: Opt("Bad " + petOwner.name),
+            pets: Opt(() {
               if (petOwner is DogOwner) //
-                return petOwner.pets
-                    .map<Dog>((x) => x.cwPet(isAlive: false) as Dog)
-                    .toList();
+                return petOwner.pets.map<Dog>((x) => x.cwPet(isAlive: Opt(false)) as Dog).toList();
 
               if (petOwner is CatOwner) //
-                return petOwner.pets
-                    .map<Cat>((x) => x.cwPet(isAlive: false) as Cat)
-                    .toList();
+                return petOwner.pets.map<Cat>((x) => x.cwPet(isAlive: Opt(false)) as Cat).toList();
 
               throw Exception("unexpected owner");
-            }(),
+            }()),
           ),
         )
         .toList();
@@ -64,11 +60,7 @@ class DogOwner implements PetOwnerBase<Dog, int> {
   final String name;
   final String? dogStuff;
 
-  DogOwner(
-      {required this.id,
-      required this.pets,
-      required this.name,
-      this.dogStuff});
+  DogOwner({required this.id, required this.pets, required this.name, this.dogStuff});
 }
 
 class CatOwner implements PetOwnerBase<Cat, String> {
@@ -77,11 +69,7 @@ class CatOwner implements PetOwnerBase<Cat, String> {
   final String name;
   final String? catStuff;
 
-  CatOwner(
-      {required this.id,
-      required this.pets,
-      required this.name,
-      this.catStuff});
+  CatOwner({required this.id, required this.pets, required this.name, this.catStuff});
 }
 
 @CopyWithE()

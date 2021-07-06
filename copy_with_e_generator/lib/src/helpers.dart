@@ -1,6 +1,7 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:analyzer_models/analyzer_models.dart';
 import 'package:dartx/dartx.dart';
+import 'package:generator_common/NameType.dart';
+import 'package:generator_common/classes.dart';
 
 class DepthClassDef {
   final int depth;
@@ -34,17 +35,17 @@ int getDepth(int count, ClassDef thisType, List<ClassDef> types) {
 
 String getCopyWithParamList(
   List<NameType> fields,
-  List<GenericType> generics,
+  List<GenericsNameType> generics,
 ) {
   return fields
-      .map((e) => "${e.type.replaceAll("?", "")}? ${e.name}") //
+      .map((e) => "Opt<${e.type}>? ${e.name}") //
       .joinToString(separator: ", ");
 }
 
 String getCopyWithSignature(
   String className,
   List<NameType> fields,
-  List<GenericType> generics,
+  List<GenericsNameType> generics,
 ) {
   var paramList = getCopyWithParamList(fields, generics);
 
@@ -55,35 +56,35 @@ String getCopyWithSignature(
   return result;
 }
 
-String getGenericParams(List<GenericType> generics) {
+String getGenericParams(List<GenericsNameType> generics) {
   if (generics.isEmpty) //
     return "";
 
   var genericList = generics.map((e) {
-    if (e.baseType == null) {
+    if (e.type == null) {
       return e.name;
     }
 
-    return "${e.name} extends ${e.baseType}";
+    return "${e.name} extends ${e.type}";
   }).joinToString(separator: ", ");
   return "<$genericList>";
 }
 
-String getPropertySetThis(String className, String fieldName, String type, List<GenericType> generics) {
+String getPropertySetThis(String className, String fieldName, String? type, List<GenericsNameType> generics) {
   if (generics.any((x) => x.name == type)) //
     return "$fieldName: (this as $className).$fieldName";
 
   return "$fieldName: (this as $className).$fieldName as $type";
 }
 
-String getPropertySet(String name, String type, List<GenericType> generics) {
+String getPropertySet(String name, String? type, List<GenericsNameType> generics) {
   if (generics.any((x) => x.name == type)) //
-    return "$name: $name == null ? this.$name : $name";
+    return "$name: $name == null ? this.$name as $type : $name.value as $type";
 
-  return "$name: $name == null ? this.$name as $type : $name as $type";
+  return "$name: $name == null ? this.$name as $type : $name.value as $type";
 }
 
-String getConstructorLines(ClassDef extType, ClassDef typeType, List<GenericType> generics) {
+String getConstructorLines(ClassDef extType, ClassDef typeType, List<GenericsNameType> generics) {
   var result = typeType.fields.map((field) {
     if (extType.fields.any((x) => field.name == x.name)) {
       return getPropertySet(field.name, field.type, generics);

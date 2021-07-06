@@ -12,7 +12,7 @@ main() {
     var bob = Person(age: 5, name: "bob");
     var rob = Employee(age: 9, name: "rob");
     var hasAges = <HasAge2>[bob, rob];
-    var result = hasAges.map((x) => x.cwHasAge2(age: 3).age).toList();
+    var result = hasAges.map((x) => x.cwHasAge2(age: Opt(3)).age).toList();
 
     expect(result.toString(), "[3, 3]");
   });

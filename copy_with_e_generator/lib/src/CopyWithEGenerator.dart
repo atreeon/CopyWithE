@@ -1,30 +1,29 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:analyzer_models/analyzer_models.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:build/src/builder/build_step.dart';
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
 import 'package:dartx/dartx.dart';
+import 'package:generator_common/GeneratorForAnnotationX.dart';
+import 'package:generator_common/classes.dart';
+import 'package:generator_common/helpers.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen/source_gen.dart';
 
-import 'GeneratorForAnnotationX.dart';
-
-List<NameType> getAllFields(List<InterfaceType> interfaceTypes, ClassElement element) {
-  var superTypeFields = interfaceTypes //
-      .where((x) => x.element.name != "Object")
-      .flatMap((st) => st.element.fields.map((f) => //
-          NameType(f.name, f.type.toString())))
-      .toList();
-  var classFields = element.fields.map((f) => //
-      NameType(f.name, f.type.toString())).toList();
-
-  return (classFields + superTypeFields).distinctBy((x) => x.name).toList();
-}
+//List<NameType> getAllFields(List<InterfaceType> interfaceTypes, ClassElement classElement) {
+//  var superTypeFields = interfaceTypes //
+//      .where((x) => x.element.name != "Object")
+//      .flatMap((st) => st.element.fields.map((f) => //
+//          NameType(f.name, f.type.toString())))
+//      .toList();
+//  var classFields = classElement.fields.map((f) => //
+//      NameType(f.name, f.type.toString())).toList();
+//
+//  return (classFields + superTypeFields).distinctBy((x) => x.name).toList();
+//}
 
 class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
   @override
@@ -55,7 +54,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
           el.isAbstract,
           el.name,
           getAllFields(el.allSupertypes, el),
-          el.typeParameters.map((e) => GenericType(e.name, e.bound.toString())).toList(),
+          el.typeParameters.map((e) => GenericsNameType(e.name, e.bound.toString())).toList(),
           [
             ...el.interfaces.map((e) => e.element.name),
             el.supertype!.element.name,
@@ -72,7 +71,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
                 x.isAbstract,
                 x.name,
                 getAllFields(x.allSupertypes, x),
-                x.typeParameters.map((e) => GenericType(e.name, e.bound.toString())).toList(),
+                x.typeParameters.map((e) => GenericsNameType(e.name, e.bound.toString())).toList(),
                 x.interfaces.map((e) => e.element.name).toList(),
               ))
           .toList();
@@ -86,7 +85,7 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
         element.typeParameters.isEmpty //
             ? []
             : element.typeParameters //
-                .map((x) => GenericType(x.name, x.bound == null ? null : x.bound.toString()))
+                .map((x) => GenericsNameType(x.name, x.bound == null ? null : x.bound.toString()))
                 .toList(),
         [
           ...element.interfaces.map((e) => e.element.name),

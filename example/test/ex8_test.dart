@@ -25,7 +25,7 @@ main() {
   test("1", () {
     var a = A(a: 5, b: Y(5), c: 2);
 
-    var copy = a.cwA(a: 9, b: Y(4), c: 1);
+    var copy = a.cwA(a: Opt(9), b: Opt(Y(4)), c: Opt(1));
 
     expect(copy.a, 9);
     expect((copy.b as Y).a, 4);

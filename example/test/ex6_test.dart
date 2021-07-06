@@ -13,7 +13,7 @@ main() {
     var bob = Employee(id: 3, age: 5, name2: "bob");
     var rob = Employee(id: 4, age: 9, name2: "rob");
     var people = <IPerson>[bob, rob];
-    var result = people.map((x) => x.cwIPerson(age: 3).age).toList();
+    var result = people.map((x) => x.cwIPerson(age: Opt(3)).age).toList();
 
     expect(result.toString(), "[3, 3]");
   });

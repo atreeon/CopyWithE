@@ -1,14 +1,15 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:analyzer_models/analyzer_models.dart';
 import 'package:copy_with_e_generator/src/createCopyWith.dart';
+import 'package:generator_common/NameType.dart';
+import 'package:generator_common/classes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("createCopyWith", () {
     test("1", () {
       var extType = ClassDef(false, "Person", [
-        NameType("age", "int"),
-        NameType("name", "String?"),
+        NameTypeClassComment("age", "int", null),
+        NameTypeClassComment("name", "String?", null),
       ], [], []);
 
       var result = createCopyWith(extType, []).trim();
@@ -28,17 +29,17 @@ throw Exception();
 
     test("2", () {
       var extType = ClassDef(true, "HasAge", [
-        NameType("age", "int"),
+        NameTypeClassComment("age", "int", null),
       ], [], []);
 
       var result = createCopyWith(extType, [
         ClassDef(false, "Person", [
-          NameType("age", "int"),
-          NameType("name", "String"),
+          NameTypeClassComment("age", "int", null),
+          NameTypeClassComment("name", "String", null),
         ], [], []),
         ClassDef(false, "Employee", [
-          NameType("age", "int"),
-          NameType("name", "String"),
+          NameTypeClassComment("age", "int", null),
+          NameTypeClassComment("name", "String", null),
         ], [], []),
       ]).trim();
 
@@ -62,26 +63,26 @@ throw Exception();
 
     test("3 with generics", () {
       var extType = ClassDef(true, "PetOwnerBase", [
-        NameType("id", "T"),
-        NameType("name", "String"),
-        NameType("pets", "List<TPet>?"),
+        NameTypeClassComment("id", "T", null),
+        NameTypeClassComment("name", "String", null),
+        NameTypeClassComment("pets", "List<TPet>?", null),
       ], [
-        GenericType("T", null),
-        GenericType("TPet", "Pet"),
+        GenericsNameType("T", null),
+        GenericsNameType("TPet", "Pet"),
       ], []);
 
       var result = createCopyWith(extType, [
         ClassDef(false, "DogOwner", [
-          NameType("id", "int"),
-          NameType("pets", "List<Dog>?"),
-          NameType("name", "String"),
-          NameType("dogStuff", "String"),
+          NameTypeClassComment("id", "int", null),
+          NameTypeClassComment("pets", "List<Dog>?", null),
+          NameTypeClassComment("name", "String", null),
+          NameTypeClassComment("dogStuff", "String", null),
         ], [], []),
         ClassDef(false, "CatOwner", [
-          NameType("id", "int"),
-          NameType("pets", "List<Cat>?"),
-          NameType("name", "String"),
-          NameType("catStuff", "String"),
+          NameTypeClassComment("id", "int", null),
+          NameTypeClassComment("pets", "List<Cat>?", null),
+          NameTypeClassComment("name", "String", null),
+          NameTypeClassComment("catStuff", "String", null),
         ], [], []),
       ]).trim();
 
@@ -109,8 +110,8 @@ throw Exception();
 
     test("4 ", () {
       var extType = ClassDef(false, "Person_", [
-        NameType("age", "int"),
-        NameType("name", "String"),
+        NameTypeClassComment("age", "int", null),
+        NameTypeClassComment("name", "String", null),
       ], [], []);
 
       var result = createCopyWith(extType, []).trim();

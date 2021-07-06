@@ -1,51 +1,52 @@
 // ignore: import_of_legacy_library_into_null_safe
-import 'package:analyzer_models/analyzer_models.dart';
 import 'package:copy_with_e_generator/src/helpers.dart';
+import 'package:generator_common/NameType.dart';
+import 'package:generator_common/classes.dart';
 import 'package:test/test.dart';
 
 void main() {
   group("getCopyWithParamList", () {
     test("1a", () {
       var fields = [
-        NameType("age", "int"),
-        NameType("name", "String?"),
+        NameTypeClassComment("age", "int", null),
+        NameTypeClassComment("name", "String?", null),
       ];
 
       var result = getCopyWithParamList(fields, []);
 
-      expect(result, "int? age, String? name");
+      expect(result, "Opt<int>? age, Opt<String?>? name");
     });
 
     test("2a generic", () {
       var result = getCopyWithParamList(
         [
-          NameType("id", "T"),
-          NameType("name", "String"),
-          NameType("pets", "List<TPet>"),
+          NameTypeClassComment("id", "T", null),
+          NameTypeClassComment("name", "String", null),
+          NameTypeClassComment("pets", "List<TPet>", null),
         ],
         [
-          GenericType("TPet", "Pet"),
-          GenericType("T", null),
+          GenericsNameType("TPet", "Pet"),
+          GenericsNameType("T", null),
         ],
       );
 
-      expect(result, "T? id, String? name, List<TPet>? pets");
+      expect(result, "Opt<T>? id, Opt<String>? name, Opt<List<TPet>>? pets");
     });
 
     test("3a generic (order of generics caused a bug because T was found inside TPet!)", () {
       var result = getCopyWithParamList(
         [
-          NameType("id", "T"),
-          NameType("name", "String"),
-          NameType("pets", "List<TPet>"),
+          NameTypeClassComment("id", "T", null),
+          NameTypeClassComment("name", "String", null),
+          NameTypeClassComment("pets", "List<TPet>", null),
         ],
         [
-          GenericType("T", null),
-          GenericType("TPet", "Pet"),
+          GenericsNameType("T", null),
+          GenericsNameType("TPet", "Pet"),
         ],
       );
 
-      expect(result, "T? id, String? name, List<TPet>? pets");
+      expect(result, "Opt<T>? id, Opt<String>? name, Opt<List<TPet>>? pets");
     });
 
     test("4a null safety", () {
@@ -56,7 +57,7 @@ void main() {
 
       var result = getCopyWithParamList(fields, []);
 
-      expect(result, "int? age, String? name");
+      expect(result, "Opt<int>? age, Opt<String?>? name");
     });
   });
 
@@ -71,7 +72,7 @@ void main() {
         [],
       );
 
-      expect(result, "Person cwPerson({int? age, String? name})");
+      expect(result, "Person cwPerson({Opt<int>? age, Opt<String>? name})");
     });
 
     test("2b", () {
@@ -83,12 +84,12 @@ void main() {
           NameType("c", "int"),
         ],
         [
-          GenericType("T1", null),
-          GenericType("T2", null),
+          GenericsNameType("T1", null),
+          GenericsNameType("T2", null),
         ],
       );
 
-      expect(result, "A cwA<T1, T2>({T1? a, T2? b, int? c})");
+      expect(result, "A cwA<T1, T2>({Opt<T1>? a, Opt<T2>? b, Opt<int>? c})");
     });
 
     test("3b", () {
@@ -100,12 +101,12 @@ void main() {
           NameType("c", "int"),
         ],
         [
-          GenericType("T1", null),
-          GenericType("TPet", "Pet"),
+          GenericsNameType("T1", null),
+          GenericsNameType("TPet", "Pet"),
         ],
       );
 
-      expect(result, "A cwA<T1, TPet extends Pet>({T1? a, T2? b, int? c})");
+      expect(result, "A cwA<T1, TPet extends Pet>({Opt<T1>? a, Opt<T2>? b, Opt<int>? c})");
     });
   });
 
@@ -113,42 +114,56 @@ void main() {
     test("1c", () {
       var result = getPropertySet("age", "int", []);
 
-      expect(result, "age: age == null ? this.age as int : age as int");
+      expect(result, "age: age == null ? this.age as int : age.value as int");
     });
 
     test("2c", () {
-      var result = getPropertySet("age", "T1", [GenericType("T1", null)]);
+      var result = getPropertySet("age", "T1", [GenericsNameType("T1", null)]);
 
-      expect(result, "age: age == null ? this.age : age");
+      expect(result, "age: age == null ? this.age as T1 : age.value as T1");
     });
   });
 
   group("getConstructorLines", () {
     test("1d - simple", () {
       var result = getConstructorLines(
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(false, "Person", [NameTypeClassComment("age", "int", null), NameTypeClassComment("name", "String?", null)], [], []),
+        ClassDef(false, "Person", [NameTypeClassComment("age", "int", null), NameTypeClassComment("name", "String?", null)], [], []),
         [],
       );
 
       expect(
           result,
-          """age: age == null ? this.age as int : age as int,
-name: name == null ? this.name as String? : name as String?"""
+          """age: age == null ? this.age as int : age.value as int,
+name: name == null ? this.name as String? : name.value as String?"""
               .trim());
     });
 
     test("2d - on other type", () {
       var result = getConstructorLines(
-        ClassDef(true, "HasAge", [NameType("age", "int")], [], []),
-        ClassDef(false, "Person", [NameType("age", "int"), NameType("name", "String?")], [], []),
+        ClassDef(true, "HasAge", [NameTypeClassComment("age", "int", null)], [], []),
+        ClassDef(false, "Person", [NameTypeClassComment("age", "int", null), NameTypeClassComment("name", "String?", null)], [], []),
         [],
       );
 
       expect(
           result,
-          """age: age == null ? this.age as int : age as int,
+          """age: age == null ? this.age as int : age.value as int,
 name: (this as Person).name as String?"""
+              .trim());
+    });
+
+    test("3d - generics", () {
+      var result = getConstructorLines(
+        ClassDef(false, "Person", [NameTypeClassComment("age", "int", null), NameTypeClassComment("data", "T?", null)], [], []),
+        ClassDef(false, "Person", [NameTypeClassComment("age", "int", null), NameTypeClassComment("data", "T?", null)], [], []),
+        [],
+      );
+
+      expect(
+          result,
+          """age: age == null ? this.age as int : age.value as int,
+data: data == null ? this.data as T? : data.value as T?"""
               .trim());
     });
   });

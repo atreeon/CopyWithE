@@ -7,13 +7,18 @@ environment:
   sdk: ">=2.12.0-0 <3.0.0"
 
 dependencies:
-  analyzer_models: ^1.0.3
+#  analyzer_models: ^1.0.3
+#  generator_common: ^1.0.0-nullsafety8
+  generator_common:
+    path: ../../generator_common/
   build: ^1.6.3
   source_gen: ^0.9.10+3
-  copy_with_e_annotation: ^1.0.2-nullsafety2
+  copy_with_e_annotation:
+    path: ../copy_with_e_annotation
+
+  #^1.0.2-nullsafety2
   dartx: ^0.6.0
-#  tuple: ^1.0.3
-  analyzer: '>=0.40.0 <=1.0.0'
+  analyzer: '>=0.40.0 <=1.7.1'
   adi_helpers: ^1.0.7-nullsafety2
 
 dev_dependencies:  
