@@ -101,10 +101,8 @@ class CopyWithEGenerator extends GeneratorForAnnotationX<CopyWithE> {
       sb.writeln(createCopyWith(extClass, types2));
     }
 
-    return element.session! //
-        .getResolvedLibraryByElement(element.library!)
-        .then((resolvedLibrary) {
-      return sb.toString();
-    });
+//    var output = "/*" + sb.toString() + "*/";
+    var output = sb.toString();
+    return output;
   }
 }

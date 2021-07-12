@@ -20,13 +20,7 @@ String createCopyWith(
       .where((x) => !x.isAbstract) //
       .forEach((type) {
     var constructorName = getConstructorName(type.name);
-//    sb.writeln("//${type.generics.toString()}");
-//    sb.writeln("//${type.fields.toString()}");
-//    sb.writeln("//${type.name.toString()}");
-//    sb.writeln("//${type.isAbstract.toString()}");
-//    sb.writeln("//${type.baseTypes.toString()}");
     sb.writeln("if (this is ${type.name}) {");
-
     sb.writeln("return ${constructorName}(");
     sb.writeln(getConstructorLines(extType, type, type.generics) + ",");
     sb.writeln(");}");
