@@ -1,5 +1,4 @@
 import 'package:copy_with_e_annotation/copy_with_e_annotation.dart';
-import 'package:test/test.dart';
 
 part 'ex15_test.g.dart';
 

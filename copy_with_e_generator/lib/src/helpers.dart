@@ -77,7 +77,6 @@ String getPropertySetThis(String className, String fieldName, String? type, List
   return "$fieldName: (this as $className).$fieldName as $type";
 }
 
-
 String getPropertySet(String name, String? type, List<GenericsNameType> generics) {
   if (generics.any((x) => x.name == type)) //
     return "$name: $name == null ? this.$name as $type : $name.value as $type";
